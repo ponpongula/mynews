@@ -8,6 +8,6 @@
         <title>MyNews</title>
     </head>
     <body>
-      <h1>課題2</h1>
+      <h1>プロフィールの編集</h1>
     </body>
 </html>

@@ -33,12 +33,40 @@
           </button>
           <div class="navber-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto"></ul>
-            <ul class="navbar-nav ml-auto"></ul>
+            <ul class="navbar-nav ml-auto">
+
+         @guest
+            <li><a class="nav-link" href="{{ route('login') }}">{{ __('lohin') }}
+            </a></il>
+
+         @else
+             <li class="nav-item bropdown">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
+                 role="button" date-toggle="dropdown" aria-expanded="false" v-pre>
+
+                {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ route('logout') }}" onclick=
+                "event.preventDefault(); document.getElementByid('logout-form').submit();">
+                {{ __('Logout') }}
+              </a>
+
+              <form id="logout-form" action="{{ route('logout') }}" method="POST"
+              style="display: none;">
+         @csrf
+              </form>
+             </div>
+           </li>
+         @endguest
+         </ul>
+
           </div>
         </div>
       </nav>
       <main class="py-4">
-        @yield('content') 
+        @yield('content')
       </main>
     </div>
   </body>

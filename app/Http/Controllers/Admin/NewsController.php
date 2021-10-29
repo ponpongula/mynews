@@ -14,6 +14,24 @@ class NewsController extends Controller
 
     public function create(Request $request)
   {
+    $this->validate($request, News::$reques);
+    $news = new News;
+    $form = $request->all();
+
+    if (isset($form['image'])) {
+      $path = $request->title('image')->store('public/image');
+      $news->imaege_path = basename($path);
+    } else {
+      $news->image_path = null;
+    }
+
+    unset($form['_token']);
+    unset($form['image']);
+
+    $news->fill($form);
+    $news->save();
+
       return redirect('admin/news/create');
   }
+
 }

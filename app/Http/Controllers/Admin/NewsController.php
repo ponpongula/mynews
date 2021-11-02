@@ -74,7 +74,7 @@ class NewsController extends Controller
       }
 
     unset($news_form['image']);
-    unset($news_form['renove']);
+    unset($news_form['remove']);
     unset($news_form['_token']);
 
     $news->fill($news_form)->save();
@@ -87,5 +87,5 @@ class NewsController extends Controller
     $news->delete();
     return redirect('admin/news/');
   }
-  
+
 }

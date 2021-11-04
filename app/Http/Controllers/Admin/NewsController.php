@@ -7,6 +7,11 @@ use App\Http\Controllers\Controller;
 
 use App\News;
 
+use App\History;
+
+use Carbon\Carbon;
+
+
 class NewsController extends Controller
 {
     public function add()
@@ -15,17 +20,17 @@ class NewsController extends Controller
     }
 
     public function create(Request $request)
-  {
-
+   {
+     //dd($request);
     $this->validate($request, News::$rules);
 
     $news = new News;
 
     $form = $request->all();
-
+    //dd($form);
     if (isset($form['image'])) {
-      $path = $request->title('image')->store('public/image');
-      $news->imaege_path = basename($path);
+      $path = $request->file('image')->store('public/image');
+      $news->image_path = basename($path);
     } else {
       $news->image_path = null;
     }
@@ -33,11 +38,12 @@ class NewsController extends Controller
     unset($form['_token']);
 
     unset($form['image']);
-
+    //dd($form);
     $news->fill($form);
+    //dd($news);
     $news->save();
 
-      return redirect('admin/news/create');
+    return redirect('admin/news/');
   }
   public function index(Request $request)
   {
@@ -78,7 +84,13 @@ class NewsController extends Controller
     unset($news_form['_token']);
 
     $news->fill($news_form)->save();
-    return redirect('admin/news');
+
+    $history = new History();
+    $history -> news_id = $news->id;
+    $history -> edited_at = Carbon::now();
+    //$person->timestamps = false;
+    $history -> save();
+    return redirect('admin/news/');
   }
 
   public function delete(Request $request)

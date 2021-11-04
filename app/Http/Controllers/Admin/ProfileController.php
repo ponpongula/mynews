@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 
 use App\Profile;
 
+use App\ProfileHistory;
+
+use Carbon\Carbon;
+
 class ProfileController extends Controller
 {
       public function add()
@@ -22,22 +26,14 @@ class ProfileController extends Controller
       $profile = new Profile();
       $form = $request->all();
 
-      if ($form['_token']) {
-        $path = $request->file('_token')->store('public/_token');
-        $profile->_token_path = basename($path);
-      } else {
-          $profile->_token_path = null;
-      }
-
-
       unset($form['remove']);
       unset($form['_token']);
 
 
-      $Profile->fill($form);
-      $Profile->save();
+      $profile->fill($form);
+      $profile->save();
 
-      return redirect('admin/profile/create');
+      return redirect('admin/profile/');
   }
 
   public function index(Request $request)
@@ -79,7 +75,15 @@ public function update();
     unset($profile_form['remove']);
     unset($profile_form['_token']);
 
+
+
     $profile->fill($profile_form)->save();
+
+    $history = new ProfileHistory();
+    $history -> profile_id = $profile->id;
+    $history -> edited_at = Carbon::now();
+    $history -> save();
+    //$history -> fill($form);
     return redirect('admin/profile/');
   }
 

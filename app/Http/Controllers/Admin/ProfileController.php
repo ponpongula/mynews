@@ -80,9 +80,9 @@ public function update();
     $profile->fill($profile_form)->save();
 
     $history = new ProfileHistory();
-    $history -> profile_id = $profile->id;
-    $history -> edited_at = Carbon::now();
-    $history -> save();
+    $history->profile_id = $profile->id;
+    $history->edited_at = Carbon::now();
+    $history->save();
     //$history -> fill($form);
     return redirect('admin/profile/');
   }
